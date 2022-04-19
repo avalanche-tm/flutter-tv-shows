@@ -64,6 +64,12 @@ flutter_icons:
   ios: true
   image_path: "assets/launcher_icon.png"
 
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/splash_logo.png
+  android_12:
+    image: assets/splash_logo.png
+
 # The following section is specific to Flutter.
 flutter:
 
@@ -91,29 +97,29 @@ flutter:
   fonts:
     - family: Karla
       fonts:
-        - asset: fonts/Karla-Regular.ttf
-        - asset: fonts/Karla-Bold.ttf
+        - asset: assets/fonts/Karla-Regular.ttf
+        - asset: assets/fonts/Karla-Bold.ttf
           weight: 700
     - family: OpenSans
       fonts:
-        - asset: fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/OpenSans-Bold.ttf
           weight: 700
     - family: Roboto
       fonts:
-        - asset: fonts/Roboto-Regular.ttf
-        - asset: fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
           weight: 500
     - family: SFProText
       fonts:
-        - asset: fonts/SFProText-Regular.ttf
-        - asset: fonts/SFProText-Semibold.ttf
+        - asset: assets/fonts/SFProText-Regular.ttf
+        - asset: assets/fonts/SFProText-Semibold.ttf
           weight: 600
     - family: SFUIDisplay
       fonts:
-        - asset: fonts/SFUIDisplay-Regular.ttf
+        - asset: assets/fonts/SFUIDisplay-Regular.ttf
     - family: SFUIText
       fonts:
-        - asset: fonts/SFProText-Regular.ttf
+        - asset: assets/fonts/SFProText-Regular.ttf
 
   #
   # For details regarding fonts from package dependencies,
