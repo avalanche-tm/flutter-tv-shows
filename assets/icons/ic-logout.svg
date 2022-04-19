@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic-logout</title>
+    <defs>
+        <path d="M20,0.5 C30.76955,0.5 39.5,9.23045 39.5,20 C39.5,30.769553 30.76955,39.5 20,39.5 C9.230447,39.5 0.5,30.769553 0.5,20 C0.5,9.23045 9.230447,0.5 20,0.5 Z" id="path-1"></path>
+        <path d="M20,0 C30.9306307,0 39.8132249,8.76873348 39.9970929,19.6555107 L40,20 C40,30.9306357 31.2312665,39.813225 20.3444893,39.9970929 L20,40 C9.06936432,40 0.186774951,31.2312714 0.00290705581,20.3444894 L0,20 C0,9.06936927 8.76872858,0.186775054 19.6555106,0.00290705742 L20,0 Z" id="path-3"></path>
+        <polygon id="path-5" points="0 0 24 0 24 24 0 24"></polygon>
+        <path d="M15.61111,0 C16.65,0 17.5,0.8 17.5,1.77778 L17.5,1.77778 L17.5,14.22222 C17.5,15.2 16.65,16 15.61111,16 L15.61111,16 L2.38889,16 C1.34056,16 0.5,15.2 0.5,14.22222 L0.5,14.22222 L0.5,10.66667 L2.38889,10.66667 L2.38889,14.22222 L15.61111,14.22222 L15.61111,1.77778 L2.38889,1.77778 L2.38889,5.33333 L0.5,5.33333 L0.5,1.77778 C0.5,0.8 1.34056,0 2.38889,0 L2.38889,0 L15.61111,0 Z M8.68519,4 L13.5,8 L8.68519,12 L7.32741,10.872 L9.81185,8.8 L0.5,8.8 L0.5,7.2 L9.81185,7.2 L7.32741,5.128 L8.68519,4 Z" id="path-7"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic-logout">
+            <g id="Group-3">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M20,0 L20,0 C31.04569,0 40,8.95431 40,20 L40,20 C40,31.045695 31.04569,40 20,40 L20,40 C8.954305,40 0,31.045695 0,20 L0,20 C0,8.95431 8.954305,0 20,0 Z" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"></path>
+            </g>
+            <g id="Group-6">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <g id="Clip-5"></g>
+                <path d="M20,0 L20,0 C31.04569,0 40,8.954305 40,20 L40,20 C40,31.04569 31.04569,40 20,40 L20,40 C8.954305,40 0,31.04569 0,20 L0,20 C0,8.954305 8.954305,0 20,0 Z" id="Stroke-4" stroke="#EAEAEA" stroke-width="2" mask="url(#mask-4)"></path>
+            </g>
+            <g id="Group-9" transform="translate(8.000000, 8.000000)">
+                <mask id="mask-6" fill="white">
+                    <use xlink:href="#path-5"></use>
+                </mask>
+                <g id="Clip-8"></g>
+                <polygon id="Fill-7" fill-opacity="0" fill="#FF0000" mask="url(#mask-6)" points="-5 29 29 29 29 -5 -5 -5"></polygon>
+            </g>
+            <g id="Group-12" transform="translate(11.000000, 12.000000)">
+                <mask id="mask-8" fill="white">
+                    <use xlink:href="#path-7"></use>
+                </mask>
+                <g id="Clip-11"></g>
+                <polygon id="Fill-10" fill="#505050" mask="url(#mask-8)" points="-4.5 21 22.5 21 22.5 -5 -4.5 -5"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

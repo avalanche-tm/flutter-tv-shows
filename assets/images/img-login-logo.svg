@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="75px" height="80px" viewBox="0 0 75 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>img-login-logo</title>
+    <defs>
+        <path d="M21.83478,1.47344 C35.32046,6.69352 56.56106,20.53435 68.41261,29.8259 C76.28815,36.00008 75.7857,46.18773 67.89014,52.33624 C56.64677,61.09198 32.73479,73.885306 20.0477,78.497719 C10.64222,81.917383 1.841322,76.745033 0.8143448,66.79039 C-0.6524715,52.57592 -0.08175782,27.94747 2.078948,12.27697 C3.445684,2.36338 12.50217,-2.13869 21.83478,1.47344 Z" id="path-1"></path>
+        <linearGradient x1="0.000210332267%" y1="0.294825%" x2="0.000210332267%" y2="1280.29482%" id="linearGradient-3">
+            <stop stop-color="#FF758C" offset="0%"></stop>
+            <stop stop-color="#FF7EB3" offset="100%"></stop>
+        </linearGradient>
+        <path d="M21.83478,1.47344 C35.32046,6.69352 56.56106,20.53435 68.41261,29.8259 C76.28815,36.00008 75.7857,46.18773 67.89014,52.33624 C56.64677,61.09198 32.73479,73.885306 20.0477,78.497719 C10.64222,81.917383 1.841322,76.745033 0.8143448,66.79039 C-0.6524715,52.57592 -0.08175782,27.94747 2.078948,12.27697 C3.445684,2.36338 12.50217,-2.13869 21.83478,1.47344 Z" id="path-4"></path>
+        <linearGradient x1="19.5066263%" y1="14.2192%" x2="60.2015442%" y2="72.0338375%" id="linearGradient-6">
+            <stop stop-color="#FF758C" offset="0%"></stop>
+            <stop stop-color="#FF7EB3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="img-login-logo">
+            <g id="Group-3">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <polygon id="Fill-1" fill="url(#linearGradient-3)" mask="url(#mask-2)" points="0 80 75 80 75 0 0 0"></polygon>
+            </g>
+            <g id="Group-6">
+                <mask id="mask-5" fill="white">
+                    <use xlink:href="#path-4"></use>
+                </mask>
+                <g id="Clip-5"></g>
+                <polygon id="Fill-4" fill="url(#linearGradient-6)" mask="url(#mask-5)" points="0 80 75 80 75 0 0 0"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

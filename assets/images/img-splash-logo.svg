@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="146px" height="147px" viewBox="0 0 146 147" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>img-splash-logo</title>
+    <defs>
+        <path d="M21.83478,1.4734 C35.32046,6.6935 56.56106,20.5344 68.41261,29.8259 C76.2882,36.0001 75.7857,46.1877 67.89014,52.33624 C56.64677,61.09198 32.73479,73.88531 20.0477,78.49772 C10.64222,81.91738 1.84132,76.74503 0.81434,66.79039 C-0.65247,52.57592 -0.08176,27.9475 2.07895,12.277 C3.44568,2.3634 12.50217,-2.1387 21.83478,1.4734 Z" id="path-1"></path>
+        <linearGradient x1="0.000213333333%" y1="0.294875%" x2="0.000213333333%" y2="1280.29488%" id="linearGradient-3">
+            <stop stop-color="#FF758C" offset="0%"></stop>
+            <stop stop-color="#FF7EB3" offset="100%"></stop>
+        </linearGradient>
+        <path d="M21.83478,1.4734 C35.32046,6.6935 56.56106,20.5344 68.41261,29.8259 C76.2882,36.0001 75.7857,46.1877 67.89014,52.33624 C56.64677,61.09198 32.73479,73.88531 20.0477,78.49772 C10.64222,81.91738 1.84132,76.74503 0.81434,66.79039 C-0.65247,52.57592 -0.08176,27.9475 2.07895,12.277 C3.44568,2.3634 12.50217,-2.1387 21.83478,1.4734 Z" id="path-4"></path>
+        <linearGradient x1="19.5066289%" y1="14.21925%" x2="60.2015469%" y2="72.0338875%" id="linearGradient-6">
+            <stop stop-color="#FF758C" offset="0%"></stop>
+            <stop stop-color="#FF7EB3" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-7" points="0.441406 0.46875 146 0.46875 146 56.46875 0.441406 56.46875"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="img-splash-logo">
+            <g id="Group-7" transform="translate(30.000000, 0.000000)">
+                <g id="Group-3">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <polygon id="Fill-1" fill="url(#linearGradient-3)" mask="url(#mask-2)" points="0 80 75 80 75 0 0 0"></polygon>
+                </g>
+                <g id="Group-6">
+                    <mask id="mask-5" fill="white">
+                        <use xlink:href="#path-4"></use>
+                    </mask>
+                    <g id="Clip-5"></g>
+                    <polygon id="Fill-4" fill="url(#linearGradient-6)" mask="url(#mask-5)" points="0 80 75 80 75 0 0 0"></polygon>
+                </g>
+            </g>
+            <g id="Group-9" transform="translate(0.000000, 90.000000)">
+                <mask id="mask-8" fill="white">
+                    <use xlink:href="#path-7"></use>
+                </mask>
+                <g id="Clip-8"></g>
+                <text id="shows" mask="url(#mask-8)" font-family="LucidaGrande, Lucida Grande" font-size="48" font-weight="normal" letter-spacing="0.0077" fill="#2E2E2E">
+                    <tspan x="0.441406" y="46.46875">sh</tspan>
+                    <tspan x="54.7146185" y="46.46875" letter-spacing="-0.0403">o</tspan>
+                    <tspan x="84.1586935" y="46.46875">ws</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

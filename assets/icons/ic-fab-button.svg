@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="68px" height="74px" viewBox="0 0 68 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic-fab-button</title>
+    <defs>
+        <path d="M28,0.25 C43.3259,0.25 55.75,12.6741 55.75,28 C55.75,43.3259 43.3259,55.75 28,55.75 C12.6741,55.75 0.25,43.3259 0.25,28 C0.25,12.6741 12.6741,0.25 28,0.25 Z" id="path-1"></path>
+        <path d="M28,0 C43.46397,0 56,12.53603 56,28 C56,43.46397 43.46397,56 28,56 C12.53603,56 0,43.46397 0,28 C0,12.53603 12.53603,0 28,0 Z M28,0.5 C12.81217,0.5 0.5,12.81217 0.5,28 C0.5,43.18783 12.81217,55.5 28,55.5 C43.18783,55.5 55.5,43.18783 55.5,28 C55.5,12.81217 43.18783,0.5 28,0.5 Z" id="path-3"></path>
+        <linearGradient x1="86.1333333%" y1="92.4509804%" x2="86.1333333%" y2="97.887452%" id="linearGradient-5">
+            <stop stop-color="#000000" offset="0%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </linearGradient>
+        <path d="M28,0 C43.46397,0 56,12.53603 56,28 C56,43.46397 43.46397,56 28,56 C12.53603,56 0,43.46397 0,28 C0,12.53603 12.53603,0 28,0 Z M28,0.5 C12.81217,0.5 0.5,12.81217 0.5,28 C0.5,43.18783 12.81217,55.5 28,55.5 C43.18783,55.5 55.5,43.18783 55.5,28 C55.5,12.81217 43.18783,0.5 28,0.5 Z" id="path-6"></path>
+        <linearGradient x1="86.1333333%" y1="92.4509804%" x2="86.1333333%" y2="97.9411765%" id="linearGradient-8">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-9" points="8 0 8 6 14 6 14 8 8 8 8 14 6 14 6 8 0 8 0 6 6 6 6 0"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic-fab-button">
+            <image id="Image-1" x="0" y="6" width="68" height="68" xlink:href="data:image/png;base64,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"></image>
+            <image id="Image-4" x="0" y="0" width="68" height="68" xlink:href="data:image/png;base64,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"></image>
+            <g id="Group-9" transform="translate(6.000000, 6.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-8"></g>
+                <path d="M28,56 C43.46397,56 56,43.46397 56,28 C56,12.53603 43.46397,0 28,0 C12.53603,0 0,12.53603 0,28 C0,43.46397 12.53603,56 28,56 Z" id="Fill-7" fill="#FF758C" mask="url(#mask-2)"></path>
+            </g>
+            <g id="Group-12" transform="translate(6.000000, 6.000000)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <g id="Clip-11"></g>
+                <polygon id="Fill-10" fill="url(#linearGradient-5)" mask="url(#mask-4)" points="-295 77 80 77 80 -943 -295 -943"></polygon>
+            </g>
+            <g id="Group-15" transform="translate(6.000000, 6.000000)">
+                <mask id="mask-7" fill="white">
+                    <use xlink:href="#path-6"></use>
+                </mask>
+                <g id="Clip-14"></g>
+                <polygon id="Fill-13" fill="url(#linearGradient-8)" mask="url(#mask-7)" points="-295 77 80 77 80 -943 -295 -943"></polygon>
+            </g>
+            <g id="Group-18" transform="translate(27.000000, 27.000000)">
+                <mask id="mask-10" fill="white">
+                    <use xlink:href="#path-9"></use>
+                </mask>
+                <g id="Clip-17"></g>
+                <polygon id="Fill-16" fill="#FFFFFF" mask="url(#mask-10)" points="-5 19 19 19 19 -5 -5 -5"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

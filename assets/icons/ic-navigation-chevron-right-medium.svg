@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9px" height="14px" viewBox="0 0 9 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>ic-navigation-chevron-right-medium</title>
+    <defs>
+        <polygon id="path-1" points="0 12 2 14 9 7 2 0 0 2 5 7"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic-navigation-chevron-right-medium">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="Clip-2"></g>
+            <polygon id="Fill-1" fill="#A0A0A3" mask="url(#mask-2)" points="-5 -5 -5 19 14 19 14 -5"></polygon>
+        </g>
+    </g>
+</svg>

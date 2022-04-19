@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "fvm build_runner",
+            "command": "fvm flutter pub run build_runner watch --delete-conflicting-outputs",
+            "type": "shell",
+            "args": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "group": "none",
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        }
+    ]
+}
