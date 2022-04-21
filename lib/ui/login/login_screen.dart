@@ -23,6 +23,12 @@ Widget loginScreen(BuildContext context, WidgetRef ref) {
   useActionListener((compositeSubscription) =>
       _handleActions(compositeSubscription, ref, context));
 
+  ref.listen<AuthState>(authProvider, (previous, next) {
+    next.whenOrNull(
+      error: (msg) => _showSnackBar(context, msg),
+    );
+  });
+
   return SafeArea(
     child: Scaffold(
       body: Column(
@@ -60,6 +66,13 @@ void _handleActions(
       );
     }),
   );
+}
+
+void _showSnackBar(BuildContext context, String errorMsg) {
+  final snackBar = SnackBar(
+    content: Text(errorMsg),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
 @hcwidget
@@ -104,23 +117,11 @@ Widget __loginButton(
 Future<void> _onLoginPressed(
     WidgetRef ref, String email, String password, bool rememberMe) async {
   // if (!loggingIn) {
-  // var secret = await ref
-  //     .read(secureStorageRepositoryProvider) //
-  //     .read('token')
-  //     .run();
-  // var b = await ref
-  //     .read(secureStorageRepositoryProvider) //
-  //     .read('userEmail')
-  //     .run();
-  // var a = await ref.read(authProvider.notifier).loggedIn;
-  // var b = await ref.read(authProvider.notifier).loggedIn;
   return ref.read(authProvider.notifier).loginWithEmail(
         email,
         password,
         rememberMe,
       );
-  // var c = await ref.read(authProvider.notifier).loggedIn;
-  // var d = await ref.read(authProvider.notifier).loggedIn;
   // }
 }
 
@@ -144,6 +145,7 @@ Widget __passwordTextField(TextEditingController controller,
     ValueNotifier<bool> isFieldValidNotifier) {
   final formKey = useRef(GlobalKey<FormState>());
   final revealPassword = useState(false);
+
   return Form(
     key: formKey.value,
     child: Padding(

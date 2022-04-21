@@ -14,6 +14,13 @@ class AuthInteractor extends IAuthInteractor {
   AuthInteractor(this._authRepository, this._secureStorageRepository);
 
   @override
+  TaskEither<Object, Unit> init() {
+    return _readToken(_tokenKey)
+        .flatMap((token) => _updateHttpAuthorizationHeader(token))
+        .map((r) => unit);
+  }
+
+  @override
   Future<Either<Object, User>> login(
       String email, String password, bool rememberMe) async {
     final token = await _authRepository.login(email, password);
@@ -21,17 +28,20 @@ class AuthInteractor extends IAuthInteractor {
         .flatMap<String>((r) => r == null ? left(Exception('error')) : right(r))
         .toTaskEither()
         .flatMap(
-          (r) => rememberMe
-              ? _writeToSecureStorage(_tokenKey, r)
-              : TaskEither.of(unit),
+          (token) => rememberMe
+              ? _writeToSecureStorage(_tokenKey, token)
+                  .flatMap((r) => _writeToSecureStorage(_userEmailKey, email))
+                  .map((r) => token)
+              : TaskEither.of(token),
         )
-        .andThen(
-          () => rememberMe
-              ? _writeToSecureStorage(_userEmailKey, email)
-              : TaskEither.of(unit),
-        )
+        .flatMap((token) => _updateHttpAuthorizationHeader(token))
         .map((r) => User(email))
         .run();
+  }
+
+  TaskEither<Object, String> _updateHttpAuthorizationHeader(String token) {
+    _authRepository.setAuthorizationHeader(token);
+    return TaskEither.of(token);
   }
 
   @override
@@ -47,10 +57,9 @@ class AuthInteractor extends IAuthInteractor {
           .map((email) => User(email));
 
   @override
-  Future<bool> get loggedIn async =>
-      (await _readFromSecureStorage(_tokenKey).run()).match(
+  Future<bool> get loggedIn async => (await _readToken(_tokenKey).run()).match(
         (error) => false,
-        (token) => token != null,
+        (token) => token.isNotEmpty,
       );
 
   TaskEither<Object, Unit> _writeToSecureStorage(String key, String token) {
@@ -60,4 +69,8 @@ class AuthInteractor extends IAuthInteractor {
   TaskEither<Object, String?> _readFromSecureStorage(String key) {
     return _secureStorageRepository.read(key);
   }
+
+  TaskEither<Object, String> _readToken(String tokenKey) =>
+      _readFromSecureStorage(tokenKey).flatMap<String>((r) =>
+          r == null ? TaskEither.left(Exception('error')) : TaskEither.of(r));
 }

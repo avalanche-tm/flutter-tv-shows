@@ -1,3 +1,4 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/auth/i_auth_interactor.dart';
@@ -43,4 +44,6 @@ class AuthNotifier extends StateNotifier<AuthState>
   }
 
   Future<bool> get loggedIn => _authInteractor.loggedIn;
+
+  TaskEither<Object, Unit> init() => _authInteractor.init();
 }

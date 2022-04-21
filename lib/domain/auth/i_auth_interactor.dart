@@ -10,4 +10,5 @@ abstract class IAuthInteractor {
   Future<Either<Object, Unit>> logout();
   Future<Either<Object, User>> get currentUser;
   Future<bool> get loggedIn;
+  TaskEither<Object, Unit> init();
 }

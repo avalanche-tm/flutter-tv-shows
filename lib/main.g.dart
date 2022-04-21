@@ -7,11 +7,13 @@ part of 'main.dart';
 // **************************************************************************
 
 class MyApp extends HookConsumerWidget {
-  const MyApp(this.loggedIn, {Key? key}) : super(key: key);
+  const MyApp(this.loggedIn, this.navigatorKey, {Key? key}) : super(key: key);
 
   final bool loggedIn;
 
+  final GlobalKey<NavigatorState> navigatorKey;
+
   @override
   Widget build(BuildContext _context, WidgetRef _ref) =>
-      myApp(_context, _ref, loggedIn);
+      myApp(_context, _ref, loggedIn, navigatorKey);
 }

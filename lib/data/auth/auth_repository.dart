@@ -23,4 +23,8 @@ class AuthRepository extends IAuthRepository {
     return _httpClient
         .post(apiPath, data: {'email': email, 'password': password});
   }
+
+  @override
+  void setAuthorizationHeader(String token) =>
+      _httpClient.options.headers['Authorization'] = 'token $token';
 }
