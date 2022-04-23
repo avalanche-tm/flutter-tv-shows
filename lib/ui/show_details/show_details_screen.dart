@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/shows/show_details.dart';
 import '../../domain/shows/show_episode.dart';
+import '../custom_painters/fading_effect.dart';
 import '../hooks/async_value_cache_hook.dart';
 import '../hooks/fade_in_animation_hook.dart';
 import '../shows/show_details_provider.dart';
@@ -14,16 +15,18 @@ part 'show_details_screen.g.dart';
 
 @hcwidget
 Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
-  return SafeArea(
-    child: Scaffold(
-      body: NestedScrollView(
+  return Scaffold(
+    // extendBodyBehindAppBar: true,
+    body: SafeArea(
+      top: false,
+      child: NestedScrollView(
         floatHeaderSlivers: true,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
               floating: true,
               pinned: true,
-              expandedHeight: 400,
+              expandedHeight: 450,
               collapsedHeight: 250,
               elevation: 0,
               backgroundColor: Colors.white,
@@ -31,6 +34,7 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
               leading: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
                 icon: SvgPicture.asset('assets/icons/ic-navigate-back.svg'),
+                iconSize: 40,
               ),
             ),
             // SliverAppBar(
@@ -56,10 +60,10 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
           child: _EpisodesSection(showId),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+    ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
     ),
   );
 }
@@ -86,40 +90,50 @@ Widget __headerSection(BuildContext context, WidgetRef ref, String showId) {
 @hcwidget
 Widget __header(BuildContext context, WidgetRef ref, ShowDetails data) {
   final animation = useFadeInAnimation();
-  return Column(
-    children: [
-      Expanded(
-        child: FadeTransition(
-          opacity: animation,
+  return FadeTransition(
+    opacity: animation,
+    child: Column(
+      children: [
+        Expanded(
           child: Stack(
             children: [
               Positioned.fill(
-                child: Image.network(
-                  'https://api.infinum.academy' + data.imageUrl,
-                  fit: BoxFit.cover,
+                child: CustomPaint(
+                  foregroundPainter: FadingEffect(),
+                  child: Image.network(
+                    'https://api.infinum.academy' + data.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-      ),
-      SizedBox(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(data.title),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(data.description),
-            ),
-          ],
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  data.title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  data.description,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
 
@@ -169,44 +183,52 @@ Widget __episodesSection(BuildContext context, WidgetRef ref, String showId) {
 
 @hcwidget
 Widget __episodesList(
-    BuildContext context, WidgetRef ref, ShowEpisodes epsisodes) {
+    BuildContext context, WidgetRef ref, ShowEpisodes episodes) {
   return ListView.builder(
-    itemCount: epsisodes.length + 1,
+    itemCount: episodes.length + 1,
     itemBuilder: (context, index) {
       final adjustedIdx = index - 1 >= 0 ? index - 1 : 0;
-      final item = epsisodes[adjustedIdx];
+      final item = episodes[adjustedIdx];
       return index == 0
           ? Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('Episodes'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      'Episodes',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ),
-                  Text(epsisodes.length.toString())
+                  Text(
+                    episodes.length.toString(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  )
                 ],
               ),
             )
           : InkWell(
               onTap: () {},
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.fromLTRB(20, 17, 23, 17),
                 child: SizedBox(
-                  height: 20,
+                  height: 25,
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 70,
+                        width: 80,
                         child: Text(
                           'S${item.season} Ep${item.episodeNumber}',
                           overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                       Expanded(
                         child: Text(
                           item.title,
                           overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                       SvgPicture.asset(

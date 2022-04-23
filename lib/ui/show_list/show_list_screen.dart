@@ -28,35 +28,43 @@ Widget showListScreen(BuildContext context, WidgetRef ref) {
     );
   });
 
-  return SafeArea(
-    child: Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Shows'),
-                IconButton(
-                  onPressed: () async {
-                    await ref.read(authProvider.notifier).logout();
-                  },
-                  icon: SvgPicture.asset('assets/icons/ic-logout.svg'),
-                ),
-              ],
+  return Scaffold(
+    extendBodyBehindAppBar: true,
+    body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15, top: 5, right: 15),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Shows',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await ref.read(authProvider.notifier).logout();
+                    },
+                    iconSize: 40,
+                    icon: SvgPicture.asset('assets/icons/ic-logout.svg'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Expanded(
-            child: _ShowsSection(),
-          ),
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     await ref.read(showsProvider.notifier).getShows();
-          //   },
-          //   child: const Text('Get Shows'),
-          // ),
-        ],
+            const Expanded(
+              child: _ShowsSection(),
+            ),
+            // ElevatedButton(
+            //   onPressed: () async {
+            //     await ref.read(showsProvider.notifier).getShows();
+            //   },
+            //   child: const Text('Get Shows'),
+            // ),
+          ],
+        ),
       ),
     ),
   );
@@ -101,7 +109,7 @@ Widget __showItem(BuildContext context, WidgetRef ref, Show show) {
   final animation = useFadeInAnimation();
 
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.only(bottom: 5),
     child: FadeTransition(
       opacity: animation,
       child: GestureDetector(
@@ -116,10 +124,22 @@ Widget __showItem(BuildContext context, WidgetRef ref, Show show) {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network('https://api.infinum.academy' + show.imageUrl),
+              SizedBox(
+                width: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+                  child: Image.network(
+                    'https://api.infinum.academy' + show.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(show.title),
+                padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                child: Text(
+                  show.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
             ],
           ),

@@ -47,11 +47,11 @@ class _EpisodesSection extends HookConsumerWidget {
 }
 
 class _EpisodesList extends HookConsumerWidget {
-  const _EpisodesList(this.epsisodes, {Key? key}) : super(key: key);
+  const _EpisodesList(this.episodes, {Key? key}) : super(key: key);
 
-  final List<ShowEpisode> epsisodes;
+  final List<ShowEpisode> episodes;
 
   @override
   Widget build(BuildContext _context, WidgetRef _ref) =>
-      __episodesList(_context, _ref, epsisodes);
+      __episodesList(_context, _ref, episodes);
 }

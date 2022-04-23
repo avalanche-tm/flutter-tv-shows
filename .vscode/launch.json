@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "rare_items_store",
+            "name": "flutter_tv_shows",
             "request": "launch",
             "type": "dart",
         },
         {
-            "name": "rare_items_store (profile mode)",
+            "name": "flutter_tv_shows (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "rare_items_store (release mode)",
+            "name": "flutter_tv_shows (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

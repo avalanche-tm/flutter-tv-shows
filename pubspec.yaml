@@ -123,6 +123,9 @@ flutter:
     - family: SFUIText
       fonts:
         - asset: assets/fonts/SFProText-Regular.ttf
+    - family: Helvetica
+      fonts:
+        - asset: assets/fonts/Helvetica-Regular.ttf
 
   #
   # For details regarding fonts from package dependencies,

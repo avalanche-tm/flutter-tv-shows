@@ -29,25 +29,32 @@ Widget loginScreen(BuildContext context, WidgetRef ref) {
     );
   });
 
-  return SafeArea(
-    child: Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: SvgPicture.asset('assets/images/img-login-logo.svg'),
-          ),
-          _EmailTextField(emailController, emailValidNotifier),
-          _PasswordTextField(passwordController, passwordValidNotifier),
-          _RememberMe(rememberMe),
-          _LoginButton(
-              emailController: emailController,
-              passwordController: passwordController,
-              rememberMe: rememberMe,
-              emailValidNotifier: emailValidNotifier,
-              passwordValidNotifier: passwordValidNotifier),
-        ],
+  return Scaffold(
+    extendBodyBehindAppBar: true,
+    body: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: SvgPicture.asset('assets/images/img-login-logo.svg'),
+            ),
+            const SizedBox(height: 70),
+            _EmailTextField(emailController, emailValidNotifier),
+            const SizedBox(height: 10),
+            _PasswordTextField(passwordController, passwordValidNotifier),
+            _RememberMe(rememberMe),
+            const SizedBox(height: 25),
+            _LoginButton(
+                emailController: emailController,
+                passwordController: passwordController,
+                rememberMe: rememberMe,
+                emailValidNotifier: emailValidNotifier,
+                passwordValidNotifier: passwordValidNotifier),
+          ],
+        ),
       ),
     ),
   );
@@ -93,6 +100,7 @@ Widget __loginButton(
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
+        elevation: 0,
       ),
       //TODO: extract this function and supply it to login button as prop
       onPressed: emailValid && passwordValid
@@ -104,7 +112,7 @@ Widget __loginButton(
               )
           : null,
       child: !loggingIn
-          ? const Text('Login')
+          ? const Text('LOG IN')
           : const SizedBox(
               height: 16,
               width: 16,
@@ -126,23 +134,30 @@ Future<void> _onLoginPressed(
 }
 
 @hwidget
-Widget __rememberMe(ValueNotifier<bool> remeberMe) {
+Widget __rememberMe(BuildContext context, ValueNotifier<bool> remeberMe) {
   final checked = useValueListenable(remeberMe);
   return Row(
+    // crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Checkbox(
           value: checked,
           onChanged: (value) {
             remeberMe.value = value!;
           }),
-      const Text('Remember me'),
+      Text(
+        'Remember me',
+        style: Theme.of(context).textTheme.labelMedium,
+      ),
     ],
   );
 }
 
 @hwidget
-Widget __passwordTextField(TextEditingController controller,
-    ValueNotifier<bool> isFieldValidNotifier) {
+Widget __passwordTextField(
+  BuildContext context,
+  TextEditingController controller,
+  ValueNotifier<bool> isFieldValidNotifier,
+) {
   final formKey = useRef(GlobalKey<FormState>());
   final revealPassword = useState(false);
 
@@ -162,6 +177,7 @@ Widget __passwordTextField(TextEditingController controller,
                   : SvgPicture.asset('assets/icons/ic-hide-password.svg'),
             ),
           ),
+          style: Theme.of(context).textTheme.labelLarge,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Password is required';
@@ -176,8 +192,11 @@ Widget __passwordTextField(TextEditingController controller,
 }
 
 @hwidget
-Widget __emailTextField(TextEditingController emailController,
-    ValueNotifier<bool> isFieldValidNotifier) {
+Widget __emailTextField(
+  BuildContext context,
+  TextEditingController emailController,
+  ValueNotifier<bool> isFieldValidNotifier,
+) {
   final formKey = useRef(GlobalKey<FormState>());
   return Form(
     key: formKey.value,
@@ -185,9 +204,11 @@ Widget __emailTextField(TextEditingController emailController,
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
           controller: emailController,
+          keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             labelText: 'Email',
           ),
+          style: Theme.of(context).textTheme.labelLarge,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Email is required';

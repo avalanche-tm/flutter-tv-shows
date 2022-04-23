@@ -30,6 +30,7 @@ class ShowEpisode with _$ShowEpisode {
     return copyWith(
       episodeNumber: episodeNum.toString().padLeft(2, '0'),
       season: seasonNum.toString().padLeft(2, '0'),
+      title: title.isEmpty ? 'Untitled' : title,
     );
   }
 }

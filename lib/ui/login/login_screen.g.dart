@@ -49,7 +49,7 @@ class _RememberMe extends HookWidget {
   final ValueNotifier<bool> remeberMe;
 
   @override
-  Widget build(BuildContext _context) => __rememberMe(remeberMe);
+  Widget build(BuildContext _context) => __rememberMe(_context, remeberMe);
 }
 
 class _PasswordTextField extends HookWidget {
@@ -63,7 +63,7 @@ class _PasswordTextField extends HookWidget {
 
   @override
   Widget build(BuildContext _context) =>
-      __passwordTextField(controller, isFieldValidNotifier);
+      __passwordTextField(_context, controller, isFieldValidNotifier);
 }
 
 class _EmailTextField extends HookWidget {
@@ -77,5 +77,5 @@ class _EmailTextField extends HookWidget {
 
   @override
   Widget build(BuildContext _context) =>
-      __emailTextField(emailController, isFieldValidNotifier);
+      __emailTextField(_context, emailController, isFieldValidNotifier);
 }
