@@ -3,6 +3,8 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../domain/shows/i_shows_repository.dart';
 import '../../domain/shows/show.dart';
+import '../../domain/shows/show_details.dart';
+import '../../domain/shows/show_episode.dart';
 
 class ShowsRepository extends IShowsRepository {
   final Dio _httpClient;
@@ -21,16 +23,39 @@ class ShowsRepository extends IShowsRepository {
     });
   }
 
-  // @override
-  // Future<Either<Object, String?>> login(String email, String password) async {
-  //   return await TaskEither.tryCatch(
-  //     () => _loginWithEmail(email, password),
-  //     (error, stackTrace) => error,
-  //   ).map((res) => res.data?['data']['token'].toString()).run();
-  // }
+  @override
+  TaskEither<Object, ShowDetails> getShowDetails(String showId) {
+    return TaskEither.tryCatch(
+      () => _getShowDetails(showId),
+      (error, stackTrace) => error,
+    )
+        .map((res) => res.data['data'] as Map<String, dynamic>)
+        .map((json) => ShowDetails.fromJson(json).fixRandomErrors());
+  }
+
+  @override
+  TaskEither<Object, List<ShowEpisode>> getShowEpisodes(String showId) {
+    return TaskEither.tryCatch(
+      () => _getShowEpisodes(showId),
+      (error, stackTrace) => error,
+    )
+        .map((res) => res.data['data'] as List<dynamic>) //
+        .map((eps) => eps.map((e) => ShowEpisode.fromJson(e)))
+        .map((eps) => eps.map((e) => e.fixRandomErrors()).toList());
+  }
 
   Future<Response<dynamic>> _getShows() {
     const apiPath = '/shows';
+    return _httpClient.get(apiPath);
+  }
+
+  Future<Response<dynamic>> _getShowDetails(String showId) {
+    final apiPath = '/shows/$showId';
+    return _httpClient.get(apiPath);
+  }
+
+  Future<Response<dynamic>> _getShowEpisodes(String showId) {
+    final apiPath = '/shows/$showId/episodes';
     return _httpClient.get(apiPath);
   }
 }

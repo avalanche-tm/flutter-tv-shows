@@ -34,8 +34,13 @@ Widget myApp(BuildContext context, WidgetRef ref, bool loggedIn,
   return MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
-      // fontFamily: 'Karla',
-      primarySwatch: Colors.blue,
+      fontFamily: 'Karla',
+      primarySwatch: Colors.pink,
+      primaryColor: const Color(0xFFff758c),
+      floatingActionButtonTheme:
+          ThemeData.light().floatingActionButtonTheme.copyWith(
+                backgroundColor: const Color(0xFFff758c),
+              ),
     ),
     initialRoute: loggedIn ? AppRoute.showList : AppRoute.login,
     onGenerateRoute: (settings) => router.generateRoute(settings),

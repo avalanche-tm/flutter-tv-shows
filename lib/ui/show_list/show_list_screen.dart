@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../domain/shows/show.dart';
 import '../action_emitter/action_listener_hook.dart';
 import '../auth/auth_provider.dart';
+import '../hooks/fade_in_animation_hook.dart';
 import '../hooks/post_frame_call_hook.dart';
 import '../routing/routes.dart';
 import '../shows/shows_provider.dart';
@@ -20,6 +20,13 @@ Widget showListScreen(BuildContext context, WidgetRef ref) {
   usePostFrameCall(() => ref.read(showsProvider.notifier).getShows());
   useActionListener((compositeSubscription) =>
       _handleActions(compositeSubscription, ref, context));
+
+  ref.listen<ShowsState>(showsProvider, (previous, next) {
+    next.whenOrNull(
+      error: (errorMsg, items) =>
+          _showSnackBarError(context, 'Loading shows failed.'),
+    );
+  });
 
   return SafeArea(
     child: Scaffold(
@@ -91,31 +98,40 @@ void _handleActions(
 
 @hcwidget
 Widget __showItem(BuildContext context, WidgetRef ref, Show show) {
-  final controller = useAnimationController(
-    duration: const Duration(seconds: 1),
-  )..forward();
-
-  final animation = useMemoized(() {
-    return CurvedAnimation(parent: controller, curve: Curves.easeIn);
-  });
+  final animation = useFadeInAnimation();
 
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: FadeTransition(
       opacity: animation,
-      child: SizedBox(
-        height: 150,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network('https://api.infinum.academy' + show.imageUrl),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(show.title),
-            ),
-          ],
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          Navigator.of(context)
+              .pushNamed(AppRoute.showDetails, arguments: show.id);
+        },
+        child: SizedBox(
+          height: 150,
+          width: double.infinity,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network('https://api.infinum.academy' + show.imageUrl),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(show.title),
+              ),
+            ],
+          ),
         ),
       ),
     ),
   );
+}
+
+void _showSnackBarError(BuildContext context, String errorMsg) {
+  final snackBar = SnackBar(
+    content: Text(errorMsg),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
