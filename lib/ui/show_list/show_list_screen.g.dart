@@ -22,6 +22,15 @@ class _ShowsSection extends HookConsumerWidget {
       __showsSection(_context, _ref);
 }
 
+class _ShowsList extends StatelessWidget {
+  const _ShowsList(this.shows, {Key? key}) : super(key: key);
+
+  final List<Show> shows;
+
+  @override
+  Widget build(BuildContext _context) => __showsList(shows);
+}
+
 class _ShowItem extends HookConsumerWidget {
   const _ShowItem(this.show, {Key? key}) : super(key: key);
 

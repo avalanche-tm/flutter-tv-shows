@@ -55,3 +55,21 @@ class _EpisodesList extends HookConsumerWidget {
   Widget build(BuildContext _context, WidgetRef _ref) =>
       __episodesList(_context, _ref, episodes);
 }
+
+class _EpisodesHeader extends StatelessWidget {
+  const _EpisodesHeader(this.episodes, {Key? key}) : super(key: key);
+
+  final List<ShowEpisode> episodes;
+
+  @override
+  Widget build(BuildContext _context) => __episodesHeader(_context, episodes);
+}
+
+class _EpisodeListItem extends StatelessWidget {
+  const _EpisodeListItem(this.item, {Key? key}) : super(key: key);
+
+  final ShowEpisode item;
+
+  @override
+  Widget build(BuildContext _context) => __episodeListItem(_context, item);
+}

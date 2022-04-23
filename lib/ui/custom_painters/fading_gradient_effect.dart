@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class FadingEffect extends CustomPainter {
+class FadingGradientEffect extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Rect rect = Rect.fromPoints(
-      Offset(0, size.height / 1.3),
-      Offset(size.width, size.height),
+      Offset(0, (size.height / 1.3).roundToDouble()),
+      Offset(size.width, size.height + 1),
     );
     LinearGradient lg = const LinearGradient(
         begin: Alignment.topCenter,
@@ -19,5 +19,5 @@ class FadingEffect extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(FadingEffect linePainter) => false;
+  bool shouldRepaint(FadingGradientEffect linePainter) => false;
 }

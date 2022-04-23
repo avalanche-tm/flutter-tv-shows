@@ -57,12 +57,6 @@ Widget showListScreen(BuildContext context, WidgetRef ref) {
             const Expanded(
               child: _ShowsSection(),
             ),
-            // ElevatedButton(
-            //   onPressed: () async {
-            //     await ref.read(showsProvider.notifier).getShows();
-            //   },
-            //   child: const Text('Get Shows'),
-            // ),
           ],
         ),
       ),
@@ -73,34 +67,28 @@ Widget showListScreen(BuildContext context, WidgetRef ref) {
 @hcwidget
 Widget __showsSection(BuildContext context, WidgetRef ref) {
   final state = ref.watch(showsProvider);
-  final isLoading = state is ShowsStateLoading;
 
-  return isLoading
-      ? const Center(
-          child: CircularProgressIndicator(),
-        )
-      : ListView.builder(
-          itemCount: state.shows.length,
-          itemBuilder: (BuildContext context, int index) {
-            var item = state.shows[index];
-            return _ShowItem(item);
-          },
-        );
+  return state.when(
+    loading: (data) => const Center(
+      child: CircularProgressIndicator(),
+    ),
+    loaded: (data) => _ShowsList(data),
+    error: (errorMsg, data) => data.isNotEmpty
+        ? _ShowsList(data)
+        : const Center(
+            child: Text('No shows :('),
+          ),
+  );
 }
 
-void _handleActions(
-  CompositeSubscription compositeSubscription,
-  WidgetRef ref,
-  BuildContext context,
-) {
-  compositeSubscription.add(
-    ref.read(authProvider.notifier).action.listen((action) {
-      action.whenOrNull(
-        navigateToLogin: () => //
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(AppRoute.login, (route) => false),
-      );
-    }),
+@swidget
+Widget __showsList(List<Show> shows) {
+  return ListView.builder(
+    itemCount: shows.length,
+    itemBuilder: (BuildContext context, int index) {
+      var item = shows[index];
+      return _ShowItem(item);
+    },
   );
 }
 
@@ -146,6 +134,22 @@ Widget __showItem(BuildContext context, WidgetRef ref, Show show) {
         ),
       ),
     ),
+  );
+}
+
+void _handleActions(
+  CompositeSubscription compositeSubscription,
+  WidgetRef ref,
+  BuildContext context,
+) {
+  compositeSubscription.add(
+    ref.read(authProvider.notifier).action.listen((action) {
+      action.whenOrNull(
+        navigateToLogin: () => //
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(AppRoute.login, (route) => false),
+      );
+    }),
   );
 }
 

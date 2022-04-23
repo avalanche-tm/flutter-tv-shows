@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/shows/show_details.dart';
 import '../../domain/shows/show_episode.dart';
-import '../custom_painters/fading_effect.dart';
+import '../custom_painters/fading_gradient_effect.dart';
 import '../hooks/async_value_cache_hook.dart';
 import '../hooks/fade_in_animation_hook.dart';
 import '../shows/show_details_provider.dart';
@@ -16,7 +16,6 @@ part 'show_details_screen.g.dart';
 @hcwidget
 Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
   return Scaffold(
-    // extendBodyBehindAppBar: true,
     body: SafeArea(
       top: false,
       child: NestedScrollView(
@@ -37,17 +36,6 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
                 iconSize: 40,
               ),
             ),
-            // SliverAppBar(
-            //   floating: false,
-            //   pinned: true,
-            //   backgroundColor: Colors.white,
-            //   automaticallyImplyLeading: false,
-            //   // expandedHeight: 300,
-            //   flexibleSpace:
-            //       SizedBox.expand(child: _TitleAndDescription(showId)),
-            //   elevation: 0,
-            // ),
-            // _TitleAndDescription(showId),
           ];
         },
         body: RefreshIndicator(
@@ -99,7 +87,7 @@ Widget __header(BuildContext context, WidgetRef ref, ShowDetails data) {
             children: [
               Positioned.fill(
                 child: CustomPaint(
-                  foregroundPainter: FadingEffect(),
+                  foregroundPainter: FadingGradientEffect(),
                   child: Image.network(
                     'https://api.infinum.academy' + data.imageUrl,
                     fit: BoxFit.cover,
@@ -137,31 +125,6 @@ Widget __header(BuildContext context, WidgetRef ref, ShowDetails data) {
   );
 }
 
-// @hcwidget
-// Widget __titleAndDescription(
-//     BuildContext context, WidgetRef ref, String showId) {
-//   final details = ref.watch(showDetailsProvider(showId));
-
-//   return details.maybeWhen(
-//     data: (data) {
-//       return Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(data.title),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(data.description),
-//           ),
-//         ],
-//       );
-//     },
-//     orElse: () => const Center(child: CircularProgressIndicator()),
-//   );
-// }
-
 @hcwidget
 Widget __episodesSection(BuildContext context, WidgetRef ref, String showId) {
   final episodes = ref.watch(showEpisodesProvider(showId));
@@ -185,60 +148,71 @@ Widget __episodesSection(BuildContext context, WidgetRef ref, String showId) {
 Widget __episodesList(
     BuildContext context, WidgetRef ref, ShowEpisodes episodes) {
   return ListView.builder(
+    padding: EdgeInsets.zero,
     itemCount: episodes.length + 1,
     itemBuilder: (context, index) {
       final adjustedIdx = index - 1 >= 0 ? index - 1 : 0;
       final item = episodes[adjustedIdx];
-      return index == 0
-          ? Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      'Episodes',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ),
-                  Text(
-                    episodes.length.toString(),
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  )
-                ],
-              ),
-            )
-          : InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 17, 23, 17),
-                child: SizedBox(
-                  height: 25,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 80,
-                        child: Text(
-                          'S${item.season} Ep${item.episodeNumber}',
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          item.title,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ),
-                      SvgPicture.asset(
-                          'assets/icons/ic-navigation-chevron-right-medium.svg')
-                    ],
-                  ),
-                ),
-              ),
-            );
+      return index == 0 //
+          ? _EpisodesHeader(episodes)
+          : _EpisodeListItem(item);
     },
+  );
+}
+
+@swidget
+Widget __episodesHeader(BuildContext context, ShowEpisodes episodes) {
+  return Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            'Episodes',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ),
+        Text(
+          episodes.length.toString(),
+          style: Theme.of(context).textTheme.bodyLarge,
+        )
+      ],
+    ),
+  );
+}
+
+@swidget
+Widget __episodeListItem(BuildContext context, ShowEpisode item) {
+  return InkWell(
+    onTap: () {},
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(20, 17, 23, 17),
+      child: SizedBox(
+        height: 25,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 80,
+              child: Text(
+                'S${item.season} Ep${item.episodeNumber}',
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                item.title,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            SvgPicture.asset(
+                'assets/icons/ic-navigation-chevron-right-medium.svg')
+          ],
+        ),
+      ),
+    ),
   );
 }
 

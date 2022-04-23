@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'app/theme.dart';
 import 'ui/auth/auth_provider.dart';
@@ -11,13 +12,15 @@ import 'ui/routing/router.dart' as router;
 part 'main.g.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   final navigatorKey = GlobalKey<NavigatorState>();
   final container = ProviderContainer();
   final auth = container.read(authProvider.notifier);
   final authInitRes = await auth.init().run();
   //TODO: handle auth init errors
   final loggedIn = await auth.loggedIn;
+  await Future.delayed(const Duration(seconds: 5));
 
   runApp(
     ProviderScope(
@@ -32,6 +35,8 @@ Future<void> main() async {
 @hcwidget
 Widget myApp(BuildContext context, WidgetRef ref, bool loggedIn,
     GlobalKey<NavigatorState> navigatorKey) {
+  FlutterNativeSplash.remove();
+
   return MaterialApp(
     title: 'Flutter Demo',
     theme: pinkTheme,
