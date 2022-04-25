@@ -21,16 +21,6 @@ class AuthRepository extends IAuthRepository {
         .flatMap(_checkTokenValid);
   }
 
-  Object _mapLoginError(error, stackTrace) {
-    if (error is DioError) {
-      // Server responded with incorrect status
-      if (error.type == DioErrorType.response) {
-        return HttpErrorResponseException();
-      }
-    }
-    return error;
-  }
-
   String? _getTokenValue(res) => res.data?['data']?['token']?.toString();
 
   TaskEither<Object, String> _checkTokenValid(String? token) => token == null
@@ -46,4 +36,14 @@ class AuthRepository extends IAuthRepository {
   @override
   void setAuthorizationHeader(String token) =>
       _httpClient.options.headers['Authorization'] = 'Bearer $token';
+
+  Object _mapLoginError(error, stackTrace) {
+    if (error is DioError) {
+      // Server responded with incorrect status
+      if (error.type == DioErrorType.response) {
+        return AuthErrorResponseException();
+      }
+    }
+    return error;
+  }
 }

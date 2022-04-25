@@ -8,7 +8,7 @@ class AuthFailure extends Failure {
   String get errorMsg => _createErrorMsg();
 
   String _createErrorMsg() {
-    if (errorObject is HttpErrorResponseException) {
+    if (errorObject is AuthErrorResponseException) {
       return 'Invalid username or password';
     } else {
       return 'Login failed';

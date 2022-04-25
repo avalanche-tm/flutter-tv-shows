@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../app/gen/assets.gen.dart';
+import '../../domain/validators/validators.dart';
 import '../action_emitter/action_listener_hook.dart';
 import '../auth/auth_provider.dart';
 import '../auth/auth_state.dart';
@@ -26,7 +27,7 @@ Widget loginScreen(BuildContext context, WidgetRef ref) {
 
   ref.listen<AuthState>(authProvider, (previous, next) {
     next.whenOrNull(
-      error: (msg) => _showSnackBar(context, msg),
+      error: (msg) => _showSnackBarError(context, msg),
     );
   });
 
@@ -35,44 +36,33 @@ Widget loginScreen(BuildContext context, WidgetRef ref) {
     body: SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Assets.images.imgLoginLogo.svg(),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Assets.images.imgLoginLogo.svg(),
+                ),
+                const SizedBox(height: 70),
+                _EmailTextField(emailController, emailValidNotifier),
+                const SizedBox(height: 10),
+                _PasswordTextField(passwordController, passwordValidNotifier),
+                _RememberMe(rememberMe),
+                const SizedBox(height: 25),
+                _LoginButton(
+                    emailController: emailController,
+                    passwordController: passwordController,
+                    rememberMe: rememberMe,
+                    emailValidNotifier: emailValidNotifier,
+                    passwordValidNotifier: passwordValidNotifier),
+              ],
             ),
-            const SizedBox(height: 70),
-            _EmailTextField(emailController, emailValidNotifier),
-            const SizedBox(height: 10),
-            _PasswordTextField(passwordController, passwordValidNotifier),
-            _RememberMe(rememberMe),
-            const SizedBox(height: 25),
-            _LoginButton(
-                emailController: emailController,
-                passwordController: passwordController,
-                rememberMe: rememberMe,
-                emailValidNotifier: emailValidNotifier,
-                passwordValidNotifier: passwordValidNotifier),
-          ],
+          ),
         ),
       ),
     ),
-  );
-}
-
-void _handleActions(
-  CompositeSubscription compositeSubscription,
-  WidgetRef ref,
-  BuildContext context,
-) {
-  compositeSubscription.add(
-    ref.read(authProvider.notifier).action.listen((action) {
-      action.whenOrNull(
-        navigateToShowList: () =>
-            Navigator.of(context).pushReplacementNamed(AppRoute.showList),
-      );
-    }),
   );
 }
 
@@ -96,8 +86,7 @@ Widget __loginButton(
         minimumSize: const Size.fromHeight(50),
         elevation: 0,
       ),
-      //TODO: extract this function and supply it to login button as prop
-      onPressed: emailValid && passwordValid
+      onPressed: emailValid && passwordValid && !loggingIn
           ? () async => await _onLoginPressed(
                 ref,
                 emailController.text,
@@ -118,20 +107,17 @@ Widget __loginButton(
 
 Future<void> _onLoginPressed(
     WidgetRef ref, String email, String password, bool rememberMe) async {
-  // if (!loggingIn) {
   return ref.read(authProvider.notifier).loginWithEmail(
         email,
         password,
         rememberMe,
       );
-  // }
 }
 
 @hwidget
 Widget __rememberMe(BuildContext context, ValueNotifier<bool> remeberMe) {
   final checked = useValueListenable(remeberMe);
   return Row(
-    // crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Checkbox(
           value: checked,
@@ -153,7 +139,7 @@ Widget __passwordTextField(
   ValueNotifier<bool> isFieldValidNotifier,
 ) {
   final formKey = useRef(GlobalKey<FormState>());
-  final revealPassword = useState(false);
+  final passwordHidden = useState(true);
 
   return Form(
     key: formKey.value,
@@ -161,23 +147,19 @@ Widget __passwordTextField(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
           controller: controller,
-          obscureText: !revealPassword.value,
+          obscureText: passwordHidden.value,
           decoration: InputDecoration(
             labelText: 'Password',
             suffixIcon: IconButton(
-              onPressed: () => revealPassword.value = !revealPassword.value,
-              icon: revealPassword.value
-                  ? Assets.icons.icCharactersHide.svg()
-                  : Assets.icons.icHidePassword.svg(),
+              onPressed: () => passwordHidden.value = !passwordHidden.value,
+              icon: passwordHidden.value
+                  ? Assets.icons.icHidePassword.svg()
+                  : Assets.icons.icCharactersHide.svg(),
             ),
           ),
           style: Theme.of(context).textTheme.labelLarge,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Password is required';
-            }
-            return null;
-          },
+          validator: (value) =>
+              isFieldEmptyValidator(value, 'Password is required'),
           onChanged: (value) {
             isFieldValidNotifier.value = formKey.value.currentState!.validate();
           }),
@@ -203,12 +185,8 @@ Widget __emailTextField(
             labelText: 'Email',
           ),
           style: Theme.of(context).textTheme.labelLarge,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Email is required';
-            }
-            return null;
-          },
+          validator: (value) =>
+              isFieldEmptyValidator(value, 'Email is required'),
           onChanged: (value) {
             isFieldValidNotifier.value = formKey.value.currentState!.validate();
           }),
@@ -216,7 +194,22 @@ Widget __emailTextField(
   );
 }
 
-void _showSnackBar(BuildContext context, String errorMsg) {
+void _handleActions(
+  CompositeSubscription compositeSubscription,
+  WidgetRef ref,
+  BuildContext context,
+) {
+  compositeSubscription.add(
+    ref.read(authProvider.notifier).action.listen((action) {
+      action.whenOrNull(
+        navigateToShowList: () =>
+            Navigator.of(context).pushReplacementNamed(AppRoute.showList),
+      );
+    }),
+  );
+}
+
+void _showSnackBarError(BuildContext context, String errorMsg) {
   final snackBar = simpleSnackBar(errorMsg);
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

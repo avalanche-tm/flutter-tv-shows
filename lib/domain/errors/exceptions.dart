@@ -1,7 +1,7 @@
 /// Wrappers for third party Exceptions that shouldn't be
 /// mixed into domain
 ///
-class HttpErrorResponseException implements Exception {}
+class AuthErrorResponseException implements Exception {}
 
 class InvalidLoginTokenException implements Exception {}
 

@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
+import '../errors/exceptions.dart';
 import '../storage/i_secure_storage_repository.dart';
 import 'auth_failure.dart';
 import 'i_auth_interactor.dart';
@@ -72,6 +73,6 @@ class AuthInteractor extends IAuthInteractor {
 
   TaskEither<Object, String> _readToken(String tokenKey) =>
       _readFromSecureStorage(tokenKey).flatMap<String>((token) => token == null
-          ? TaskEither.left(Exception('error'))
+          ? TaskEither.left(InvalidLoginTokenException())
           : TaskEither.of(token));
 }
