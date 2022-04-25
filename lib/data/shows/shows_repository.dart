@@ -91,6 +91,7 @@ class ShowsRepository extends IShowsRepository {
   Show _prependImageUrl(Show show) =>
       show.copyWith(imageUrl: _prependBaseUrl(show.imageUrl));
 
+  // mapping errors could be extracted to separate file...
   Object _mapGetShowsError(error, stackTrace) {
     if (error is DioError) {
       // Server responded with incorrect status

@@ -1,16 +1,23 @@
 # flutter_tv_shows
 
-A new Flutter project.
+## Demo project trying to demonstrate usage of the following:
 
-## Getting Started
+- state management with Riverpod
+- use of union classes and Freezed
+- (hopefully) better error handling
+- usage of flutter_hooks package
+- project structure inspired by DDD
+- functional programming using fpdart
+- functional widgets  
+- integration of Flutter Version Manager
+- static asset generation with flutter_gen
+- launcher icon generation with flutter_launcher_icons
+- splash screen generation with flutter_native_splash
+- secure storage with flutter_secure_storage
+- logging with loggy
+- custom theming
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## What is not covered (yet):
+- internationalization
+- dynamic theme switching
+- testing

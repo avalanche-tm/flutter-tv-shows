@@ -37,6 +37,7 @@ class AuthRepository extends IAuthRepository {
   void setAuthorizationHeader(String token) =>
       _httpClient.options.headers['Authorization'] = 'Bearer $token';
 
+  // mapping errors could be extracted to separate file...
   Object _mapLoginError(error, stackTrace) {
     if (error is DioError) {
       // Server responded with incorrect status

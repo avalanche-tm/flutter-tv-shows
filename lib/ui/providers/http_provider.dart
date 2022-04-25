@@ -19,10 +19,6 @@ final httpProvider = Provider((ref) {
         // Optionally: show message on login that session has expired
       }
       return handler.next(e);
-    }, onRequest: (options, handler) {
-      return handler.next(options);
-    }, onResponse: (response, handler) {
-      return handler.next(response);
     }),
   );
 

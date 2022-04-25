@@ -5,6 +5,8 @@ import '../providers/app_config_provider.dart';
 import '../providers/http_provider.dart';
 
 final showsRepositoryProvider = Provider(
-  (ref) =>
-      ShowsRepository(ref.watch(httpProvider), ref.watch(appConfigProvider)),
+  (ref) => ShowsRepository(
+    ref.watch(httpProvider),
+    ref.watch(appConfigProvider),
+  ),
 );

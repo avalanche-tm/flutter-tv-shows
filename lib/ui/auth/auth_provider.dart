@@ -20,7 +20,10 @@ class AuthNotifier extends StateNotifier<AuthState>
   AuthNotifier(this._authInteractor) : super(AuthState.loggedOut());
 
   Future<void> loginWithEmail(
-      String email, String password, bool rememberMe) async {
+    String email,
+    String password,
+    bool rememberMe,
+  ) async {
     state = AuthState.loggingIn();
     final res = await _authInteractor.login(email, password, rememberMe).run();
     res.match(

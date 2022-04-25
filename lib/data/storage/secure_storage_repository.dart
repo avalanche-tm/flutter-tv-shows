@@ -10,7 +10,7 @@ class SecureStorageRepository extends ISecureStorageRepository {
   TaskEither<Object, String?> read(String key) {
     return TaskEither.tryCatch(
       () => _storage.read(key: key),
-      (error, stackTrace) => error,
+      _mapSecureStorageError,
     );
   }
 
@@ -18,7 +18,7 @@ class SecureStorageRepository extends ISecureStorageRepository {
   TaskEither<Object, Unit> write(String key, String value) {
     return TaskEither.tryCatch(
       () => _storage.write(key: key, value: value),
-      (error, stackTrace) => error,
+      _mapSecureStorageError,
     ).map((r) => unit);
   }
 
@@ -26,7 +26,7 @@ class SecureStorageRepository extends ISecureStorageRepository {
   TaskEither<Object, Unit> delete(String key) {
     return TaskEither.tryCatch(
       () => _storage.delete(key: key),
-      (error, stackTrace) => error,
+      _mapSecureStorageError,
     ).map((r) => unit);
   }
 
@@ -34,7 +34,9 @@ class SecureStorageRepository extends ISecureStorageRepository {
   TaskEither<Object, Unit> deleteAll() {
     return TaskEither.tryCatch(
       () => _storage.deleteAll(),
-      (error, stackTrace) => error,
+      _mapSecureStorageError,
     ).map((r) => unit);
   }
+
+  Object _mapSecureStorageError(error, stackTrace) => error;
 }
