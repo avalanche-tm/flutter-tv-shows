@@ -1,14 +1,14 @@
+import 'auth_failure.dart';
 import 'user.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract class IAuthInteractor {
-  Future<Either<Object, User>> login(
+  TaskEither<AuthFailure, Unit> init();
+  TaskEither<AuthFailure, User> login(
     String email,
     String password,
     bool rememberMe,
   );
-  Future<Either<Object, Unit>> logout();
-  Future<Either<Object, User>> get currentUser;
+  TaskEither<AuthFailure, Unit> logout();
   Future<bool> get loggedIn;
-  TaskEither<Object, Unit> init();
 }

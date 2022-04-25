@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/shows/i_shows_interactor.dart';
@@ -20,7 +22,7 @@ class ShowsNotifier extends StateNotifier<ShowsState> {
     state = ShowsState.loading(state.shows);
     final res = await _showsInteractor.getShows().run();
     state = res.match(
-      (error) => ShowsState.error(error.toString(), state.shows),
+      (error) => ShowsState.error(error.errorMsg, state.shows),
       (shows) => ShowsState.loaded(shows),
     );
   }

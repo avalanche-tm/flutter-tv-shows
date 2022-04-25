@@ -22,9 +22,9 @@ class AuthNotifier extends StateNotifier<AuthState>
   Future<void> loginWithEmail(
       String email, String password, bool rememberMe) async {
     state = AuthState.loggingIn();
-    final res = await _authInteractor.login(email, password, rememberMe);
+    final res = await _authInteractor.login(email, password, rememberMe).run();
     res.match(
-      (error) => state = AuthState.error(error.toString()),
+      (error) => state = AuthState.error(error.errorMsg),
       (user) {
         state = AuthState.loggedIn(user);
         emitAction(const AuthAction.navigateToShowList());
@@ -33,9 +33,9 @@ class AuthNotifier extends StateNotifier<AuthState>
   }
 
   Future<void> logout() async {
-    final res = await _authInteractor.logout();
+    final res = await _authInteractor.logout().run();
     res.match(
-      (error) => state = AuthState.error(error.toString()),
+      (error) => state = AuthState.error(error.errorMsg),
       (success) {
         state = AuthState.loggedOut();
         emitAction(const AuthAction.navigateToLogin());

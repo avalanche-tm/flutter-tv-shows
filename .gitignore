@@ -1,3 +1,9 @@
+# AppConfig files
+app_config.local.dart
+app_config.remote.dart
+app_config.staging.dart
+app_config.production.dart
+
 # Miscellaneous
 *.class
 *.log

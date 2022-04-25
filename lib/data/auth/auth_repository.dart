@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../domain/auth/i_auth_repository.dart';
+import '../../domain/errors/exceptions.dart';
 
 typedef JsonResponse = Response<Map<String, dynamic>>;
 
@@ -11,14 +12,32 @@ class AuthRepository extends IAuthRepository {
   AuthRepository(this._httpClient);
 
   @override
-  Future<Either<Object, String?>> login(String email, String password) async {
-    return await TaskEither.tryCatch(
-      () => _loginWithEmail(email, password),
-      (error, stackTrace) => error,
-    ).map((res) => res.data?['data']['token'].toString()).run();
+  TaskEither<Object, String> login(String email, String password) {
+    return TaskEither.tryCatch(
+      () => _callLoginApi(email, password),
+      _mapLoginError,
+    )
+        .map(_getTokenValue) //
+        .flatMap(_checkTokenValid);
   }
 
-  Future<JsonResponse> _loginWithEmail(String email, String password) {
+  Object _mapLoginError(error, stackTrace) {
+    if (error is DioError) {
+      // Server responded with incorrect status
+      if (error.type == DioErrorType.response) {
+        return HttpErrorResponseException();
+      }
+    }
+    return error;
+  }
+
+  String? _getTokenValue(res) => res.data?['data']?['token']?.toString();
+
+  TaskEither<Object, String> _checkTokenValid(String? token) => token == null
+      ? TaskEither.left(InvalidLoginTokenException())
+      : TaskEither.right(token);
+
+  Future<JsonResponse> _callLoginApi(String email, String password) {
     const apiPath = '/users/sessions';
     return _httpClient
         .post(apiPath, data: {'email': email, 'password': password});
@@ -26,5 +45,5 @@ class AuthRepository extends IAuthRepository {
 
   @override
   void setAuthorizationHeader(String token) =>
-      _httpClient.options.headers['Authorization'] = 'token $token';
+      _httpClient.options.headers['Authorization'] = 'Bearer $token';
 }

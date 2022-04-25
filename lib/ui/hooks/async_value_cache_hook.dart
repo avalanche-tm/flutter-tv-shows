@@ -6,9 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// Used to cache FutureProvider data.
 
 T useAsyncValueCache<T>(AsyncValue<T> value, {required T defaultValue}) {
-  final hasData = value.asData != null;
+  final valueChanged = value.asData != null;
   return useMemoized(
-    () => value.asData ?? AsyncData<T>(defaultValue),
-    [hasData],
+    () {
+      return value.asData ?? AsyncData<T>(defaultValue);
+    },
+    [valueChanged],
   ).value;
 }

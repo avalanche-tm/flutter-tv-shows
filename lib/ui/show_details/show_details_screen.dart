@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../app/gen/assets.gen.dart';
 import '../../domain/shows/show_details.dart';
 import '../../domain/shows/show_episode.dart';
-import '../custom_painters/fading_gradient_effect.dart';
-import '../hooks/async_value_cache_hook.dart';
+import '../hooks/post_frame_call_hook.dart';
+import '../shows/show_details_state.dart';
+import '../shows/show_episodes_state.dart';
+import '../widgets/simple_snackbar.dart';
+import 'fading_gradient_effect.dart';
 import '../hooks/fade_in_animation_hook.dart';
 import '../shows/show_details_provider.dart';
 import '../shows/show_episodes_provider.dart';
@@ -15,6 +20,23 @@ part 'show_details_screen.g.dart';
 
 @hcwidget
 Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
+  usePostFrameCall(() {
+    ref.read(showDetailsProvider.notifier).getShowDetails(showId);
+    ref.read(showEpisodesProvider.notifier).getShowEpisodes(showId);
+  });
+
+  ref.listen<ShowDetailsState>(showDetailsProvider, (previous, next) {
+    next.whenOrNull(
+      error: (errorMsg, items) => _showSnackBarError(context, errorMsg),
+    );
+  });
+
+  ref.listen<ShowEpisodesState>(showEpisodesProvider, (previous, next) {
+    next.whenOrNull(
+      error: (errorMsg, items) => _showSnackBarError(context, errorMsg),
+    );
+  });
+
   return Scaffold(
     body: SafeArea(
       top: false,
@@ -31,8 +53,11 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
               backgroundColor: Colors.white,
               flexibleSpace: _HeaderSection(showId),
               leading: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: SvgPicture.asset('assets/icons/ic-navigate-back.svg'),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  Navigator.of(context).pop();
+                },
+                icon: Assets.icons.icNavigateBack.svg(),
                 iconSize: 40,
               ),
             ),
@@ -41,8 +66,14 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
         body: RefreshIndicator(
           onRefresh: () {
             return Future.wait([
-              Future.value(ref.refresh(showDetailsProvider(showId))),
-              Future.value(ref.refresh(showEpisodesProvider(showId))),
+              ref.read(showDetailsProvider.notifier).getShowDetails(
+                    showId,
+                    pullRefresh: true,
+                  ),
+              ref.read(showEpisodesProvider.notifier).getShowEpisodes(
+                    showId,
+                    pullRefresh: true,
+                  ),
             ]);
           },
           child: _EpisodesSection(showId),
@@ -58,46 +89,49 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
 
 @hcwidget
 Widget __headerSection(BuildContext context, WidgetRef ref, String showId) {
-  final details = ref.watch(showDetailsProvider(showId));
-  final cache = useAsyncValueCache<ShowDetails?>(details, defaultValue: null);
+  final details = ref.watch(showDetailsProvider);
 
   return details.when(
-    data: (data) {
-      return _Header(data);
-    },
-    error: (error, stackTrace) {
-      _showSnackBarError(context, 'Loading show details has failed.');
-      return cache == null //
+    data: (data) => data == null //
+        ? const SizedBox.expand()
+        : _Header(data),
+    error: (error, data) {
+      return data == null //
           ? const SizedBox.expand()
-          : _Header(cache);
+          : _Header(data);
     },
-    loading: () => const Center(child: CircularProgressIndicator()),
+    loading: (data) => const SizedBox.expand(),
   );
 }
 
 @hcwidget
 Widget __header(BuildContext context, WidgetRef ref, ShowDetails data) {
   final animation = useFadeInAnimation();
-  return FadeTransition(
-    opacity: animation,
-    child: Column(
-      children: [
-        Expanded(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: CustomPaint(
-                  foregroundPainter: FadingGradientEffect(),
-                  child: Image.network(
-                    'https://api.infinum.academy' + data.imageUrl,
-                    fit: BoxFit.cover,
+  return Column(
+    children: [
+      Expanded(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: CustomPaint(
+                foregroundPainter: FadingGradientEffect(),
+                child: FadeInImage.assetNetwork(
+                  fit: BoxFit.cover,
+                  image: data.imageUrl,
+                  placeholder: Assets.images.imgPlaceholder.path,
+                  placeholderFit: BoxFit.cover,
+                  imageErrorBuilder: (context, _, __) => Container(
+                    color: Colors.grey.shade100,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        Container(
+      ),
+      FadeTransition(
+        opacity: animation,
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           width: double.infinity,
           child: Column(
@@ -120,43 +154,46 @@ Widget __header(BuildContext context, WidgetRef ref, ShowDetails data) {
             ],
           ),
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }
 
 @hcwidget
 Widget __episodesSection(BuildContext context, WidgetRef ref, String showId) {
-  final episodes = ref.watch(showEpisodesProvider(showId));
-  final cache = useAsyncValueCache<ShowEpisodes>(episodes, defaultValue: []);
+  final episodes = ref.watch(showEpisodesProvider);
 
   return episodes.when(
     data: (data) => data.isEmpty
         ? const Center(child: Text('No items :('))
         : _EpisodesList(data),
-    error: (error, stackTrace) {
-      _showSnackBarError(context, 'Loading episodes has failed.');
-      return cache.isEmpty
+    error: (error, data) {
+      return data.isEmpty
           ? const Center(child: Text('No items :('))
-          : _EpisodesList(cache);
+          : _EpisodesList(data);
     },
-    loading: () => const Center(child: CircularProgressIndicator()),
+    loading: (data) => const Center(child: CircularProgressIndicator()),
   );
 }
 
 @hcwidget
 Widget __episodesList(
     BuildContext context, WidgetRef ref, ShowEpisodes episodes) {
-  return ListView.builder(
-    padding: EdgeInsets.zero,
-    itemCount: episodes.length + 1,
-    itemBuilder: (context, index) {
-      final adjustedIdx = index - 1 >= 0 ? index - 1 : 0;
-      final item = episodes[adjustedIdx];
-      return index == 0 //
-          ? _EpisodesHeader(episodes)
-          : _EpisodeListItem(item);
-    },
+  final animation = useFadeInAnimation();
+
+  return FadeTransition(
+    opacity: animation,
+    child: ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: episodes.length + 1,
+      itemBuilder: (context, index) {
+        final adjustedIdx = index - 1 >= 0 ? index - 1 : 0;
+        final item = episodes[adjustedIdx];
+        return index == 0 //
+            ? _EpisodesHeader(episodes)
+            : _EpisodeListItem(item);
+      },
+    ),
   );
 }
 
@@ -207,8 +244,7 @@ Widget __episodeListItem(BuildContext context, ShowEpisode item) {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
-            SvgPicture.asset(
-                'assets/icons/ic-navigation-chevron-right-medium.svg')
+            Assets.icons.icNavigationChevronRightMedium.svg()
           ],
         ),
       ),
@@ -217,8 +253,7 @@ Widget __episodeListItem(BuildContext context, ShowEpisode item) {
 }
 
 void _showSnackBarError(BuildContext context, String errorMsg) {
-  final snackBar = SnackBar(
-    content: Text(errorMsg),
-  );
+  final snackBar = simpleSnackBar(errorMsg);
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

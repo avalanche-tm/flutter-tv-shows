@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'gen/fonts.gen.dart';
+
 const _pinkPrimaryValue = 0xFFff758c;
 const _pinkPrimary = Color(_pinkPrimaryValue);
 const _inputBorderGray = Color(0xFFDDDEDF);
@@ -9,7 +11,7 @@ const _labelMediumGray = Color(0xFF505050);
 const _titleBlack = Color(0xFF2e2e2e);
 
 const _materialColorPink = MaterialColor(
-  _pinkPrimaryValue, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
+  _pinkPrimaryValue, // default
   <int, Color>{
     50: _pinkPrimary, //10%
     100: _pinkPrimary, //20%
@@ -25,12 +27,7 @@ const _materialColorPink = MaterialColor(
 );
 
 final pinkTheme = ThemeData(
-  // colorScheme: ColorScheme.fromSeed(
-  //   seedColor: _pinkPrimary,
-  //   // primary: _pinkPrimary,
-  // ),
-  // colorSchemeSeed: _pinkPrimary,
-  fontFamily: 'Karla',
+  fontFamily: FontFamily.karla,
   primarySwatch: _materialColorPink,
   primaryColor: _pinkPrimary,
   backgroundColor: Colors.white,
@@ -65,21 +62,21 @@ final pinkTheme = ThemeData(
   inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
         contentPadding: const EdgeInsets.only(bottom: 5),
         labelStyle: const TextStyle(
-          fontFamily: 'Karla',
+          fontFamily: FontFamily.karla,
           fontSize: 17,
           fontWeight: FontWeight.normal,
           color: _inputLabelGray,
           height: 20,
         ),
         floatingLabelStyle: const TextStyle(
-          fontFamily: 'SFUIDisplay',
+          fontFamily: FontFamily.sFUIDisplay,
           fontSize: 13,
           color: _inputLabelGray,
           fontWeight: FontWeight.normal,
         ),
         errorStyle: const TextStyle(
           fontSize: 12,
-          fontFamily: 'SFProText',
+          fontFamily: FontFamily.sFProText,
           color: _pinkPrimary,
         ),
         errorBorder: const UnderlineInputBorder(
@@ -113,18 +110,10 @@ final pinkTheme = ThemeData(
     disabledColor: _buttonDisabledColor,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-
-      // style: ElevatedButton.styleFrom(
-      //   // onSurface: _buttonDisabledColor,
-      //   onPrimary: Colors.white,
-      //   minimumSize: const Size.fromHeight(_elevatedButtonHeight),
-
-      // ),
-
       style: ButtonStyle(
     textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
       return const TextStyle(
-        fontFamily: 'Helvetica',
+        fontFamily: FontFamily.helvetica,
         fontSize: 16,
         letterSpacing: 0.32,
       );
@@ -138,11 +127,6 @@ final pinkTheme = ThemeData(
       }
       return _pinkPrimary; // Regular color
     }),
-    // shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-    //   RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.circular(4.0),
-    //   ),
-    // ),
   )),
   floatingActionButtonTheme:
       ThemeData.light().floatingActionButtonTheme.copyWith(

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../app/gen/assets.gen.dart';
 import '../action_emitter/action_listener_hook.dart';
 import '../auth/auth_provider.dart';
 import '../auth/auth_state.dart';
 import '../routing/routes.dart';
+import '../widgets/simple_snackbar.dart';
 
 part 'login_screen.g.dart';
 
@@ -39,7 +40,7 @@ Widget loginScreen(BuildContext context, WidgetRef ref) {
           children: [
             Align(
               alignment: Alignment.center,
-              child: SvgPicture.asset('assets/images/img-login-logo.svg'),
+              child: Assets.images.imgLoginLogo.svg(),
             ),
             const SizedBox(height: 70),
             _EmailTextField(emailController, emailValidNotifier),
@@ -73,13 +74,6 @@ void _handleActions(
       );
     }),
   );
-}
-
-void _showSnackBar(BuildContext context, String errorMsg) {
-  final snackBar = SnackBar(
-    content: Text(errorMsg),
-  );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
 @hcwidget
@@ -173,8 +167,8 @@ Widget __passwordTextField(
             suffixIcon: IconButton(
               onPressed: () => revealPassword.value = !revealPassword.value,
               icon: revealPassword.value
-                  ? SvgPicture.asset('assets/icons/ic-characters-hide.svg')
-                  : SvgPicture.asset('assets/icons/ic-hide-password.svg'),
+                  ? Assets.icons.icCharactersHide.svg()
+                  : Assets.icons.icHidePassword.svg(),
             ),
           ),
           style: Theme.of(context).textTheme.labelLarge,
@@ -220,4 +214,9 @@ Widget __emailTextField(
           }),
     ),
   );
+}
+
+void _showSnackBar(BuildContext context, String errorMsg) {
+  final snackBar = simpleSnackBar(errorMsg);
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

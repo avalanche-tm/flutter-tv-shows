@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../app/gen/assets.gen.dart';
 import '../../domain/shows/show.dart';
 import '../action_emitter/action_listener_hook.dart';
 import '../auth/auth_provider.dart';
@@ -12,19 +12,20 @@ import '../hooks/post_frame_call_hook.dart';
 import '../routing/routes.dart';
 import '../shows/shows_provider.dart';
 import '../shows/shows_state.dart';
+import '../widgets/simple_snackbar.dart';
 
 part 'show_list_screen.g.dart';
 
 @hcwidget
 Widget showListScreen(BuildContext context, WidgetRef ref) {
   usePostFrameCall(() => ref.read(showsProvider.notifier).getShows());
+
   useActionListener((compositeSubscription) =>
       _handleActions(compositeSubscription, ref, context));
 
   ref.listen<ShowsState>(showsProvider, (previous, next) {
     next.whenOrNull(
-      error: (errorMsg, items) =>
-          _showSnackBarError(context, 'Loading shows failed.'),
+      error: (errorMsg, items) => _showSnackBarError(context, errorMsg),
     );
   });
 
@@ -49,7 +50,7 @@ Widget showListScreen(BuildContext context, WidgetRef ref) {
                       await ref.read(authProvider.notifier).logout();
                     },
                     iconSize: 40,
-                    icon: SvgPicture.asset('assets/icons/ic-logout.svg'),
+                    icon: Assets.icons.icLogout.svg(),
                   ),
                 ],
               ),
@@ -107,19 +108,24 @@ Widget __showItem(BuildContext context, WidgetRef ref, Show show) {
               .pushNamed(AppRoute.showDetails, arguments: show.id);
         },
         child: SizedBox(
-          height: 150,
           width: double.infinity,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 100,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4.0),
-                  child: Image.network(
-                    'https://api.infinum.academy' + show.imageUrl,
-                    fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: FadeInImage.assetNetwork(
+                  width: 100,
+                  height: 150,
+                  fit: BoxFit.cover,
+                  image: show.imageUrl,
+                  placeholder: Assets.images.imgPlaceholder.path,
+                  imageErrorBuilder: (context, _, __) => Container(
+                    width: 100,
+                    height: 150,
+                    color: Colors.grey.shade100,
                   ),
+                  placeholderFit: BoxFit.cover,
                 ),
               ),
               Padding(
@@ -154,8 +160,6 @@ void _handleActions(
 }
 
 void _showSnackBarError(BuildContext context, String errorMsg) {
-  final snackBar = SnackBar(
-    content: Text(errorMsg),
-  );
+  final snackBar = simpleSnackBar(errorMsg);
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

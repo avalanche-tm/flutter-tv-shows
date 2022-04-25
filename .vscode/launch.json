@@ -8,18 +8,30 @@
             "name": "flutter_tv_shows",
             "request": "launch",
             "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "ENV=default",
+            ],
         },
         {
             "name": "flutter_tv_shows (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "toolArgs": [
+                "--dart-define",
+                "ENV=default",
+            ],
         },
         {
             "name": "flutter_tv_shows (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define",
+                "ENV=default",
+            ],
         }
     ]
 }

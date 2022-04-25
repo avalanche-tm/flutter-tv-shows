@@ -1,10 +1,11 @@
-import 'package:fpdart/src/task_either.dart';
+import 'package:fpdart/fpdart.dart';
 
 import 'i_shows_interactor.dart';
 import 'i_shows_repository.dart';
 import 'show.dart';
 import 'show_episode.dart';
 import 'show_details.dart';
+import 'shows_failure.dart';
 
 class ShowsInteractor extends IShowsInteractor {
   final IShowsRepository _showsRepository;
@@ -12,17 +13,23 @@ class ShowsInteractor extends IShowsInteractor {
   ShowsInteractor(this._showsRepository);
 
   @override
-  TaskEither<Object, List<Show>> getShows() {
-    return _showsRepository.getShows();
+  TaskEither<ShowsFailure, List<Show>> getShows() {
+    return _showsRepository
+        .getShows() //
+        .mapLeft((error) => ShowsFailure(error));
   }
 
   @override
-  TaskEither<Object, ShowDetails> getShowDetails(String showId) {
-    return _showsRepository.getShowDetails(showId);
+  TaskEither<ShowsFailure, ShowDetails> getShowDetails(String showId) {
+    return _showsRepository
+        .getShowDetails(showId) //
+        .mapLeft((error) => ShowsFailure(error));
   }
 
   @override
-  TaskEither<Object, ShowEpisodes> getShowEpisodes(String showId) {
-    return _showsRepository.getShowEpisodes(showId);
+  TaskEither<ShowsFailure, ShowEpisodes> getShowEpisodes(String showId) {
+    return _showsRepository
+        .getShowEpisodes(showId) //
+        .mapLeft((error) => ShowsFailure(error));
   }
 }

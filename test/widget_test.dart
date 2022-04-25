@@ -13,8 +13,7 @@ import 'package:flutter_tv_shows/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    final navigatorKey = GlobalKey<NavigatorState>();
-    await tester.pumpWidget(MyApp(false, navigatorKey));
+    await tester.pumpWidget(const MyApp(false));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
