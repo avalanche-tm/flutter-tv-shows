@@ -1,4 +1,3 @@
-import 'app_config.local.dart';
 import 'app_config.default.dart';
 
 /// 'app_config.local.dart' should be created for your development.
@@ -19,7 +18,9 @@ abstract class AppConfig {
   factory AppConfig.fromEnvironment() {
     const env = String.fromEnvironment('ENV', defaultValue: 'unspecified');
     if (env == 'local') {
-      return AppConfigLocal();
+      // uncomment to activate local config
+      // return AppConfigLocal();
+      return AppConfigDefault();
     } else if (env == 'default') {
       return AppConfigDefault();
     } else {
