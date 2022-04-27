@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../app/app_theme/app_theme_widget.dart';
 import '../../app/gen/assets.gen.dart';
+import '../../app/theme.dart';
 import '../../domain/shows/show_details.dart';
 import '../../domain/shows/show_episode.dart';
 import '../hooks/post_frame_call_hook.dart';
@@ -38,6 +40,7 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
   });
 
   return Scaffold(
+    backgroundColor: context.customTheme.customColor,
     body: SafeArea(
       top: false,
       child: NestedScrollView(
@@ -81,7 +84,17 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
       ),
     ),
     floatingActionButton: FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        final themeManager = AppTheme.of(context);
+        if (themeManager.name == AppThemes.green) {
+          AppTheme.of(context).setTheme(AppThemes.pink);
+          return;
+        }
+        if (themeManager.name == AppThemes.pink) {
+          AppTheme.of(context).setTheme(AppThemes.green);
+          return;
+        }
+      },
       child: const Icon(Icons.add),
     ),
   );

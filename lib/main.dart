@@ -7,6 +7,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:loggy/loggy.dart';
 
 import 'app/app_config.dart';
+import 'app/app_theme/app_theme_pair.dart';
+import 'app/app_theme/app_theme_widget.dart';
+
 import 'app/theme.dart';
 import 'ui/auth/auth_provider.dart';
 import 'ui/providers/app_config_provider.dart';
@@ -58,14 +61,26 @@ void main() {
 
 @hcwidget
 Widget myApp(BuildContext context, WidgetRef ref, bool loggedIn) {
-  final navigatorKey = ref.read(navigatorProvider);
+  final navigatorKey = ref.watch(navigatorProvider);
   FlutterNativeSplash.remove();
 
-  return MaterialApp(
-    title: 'Flutter TV Shows',
-    theme: mainTheme,
-    initialRoute: loggedIn ? AppRoute.showList : AppRoute.login,
-    onGenerateRoute: (settings) => router.generateRoute(settings),
-    navigatorKey: navigatorKey,
+  return AppTheme<CustomTheme>(
+    themes: [
+      AppThemePair(
+        id: AppThemes.pink,
+        light: PinkThemeLight(),
+        dark: PinkThemeDark(),
+      ),
+      AppThemePair(id: AppThemes.green, light: GreenThemeLight()),
+    ],
+    initialMode: ThemeMode.system,
+    builder: (lightTheme, darkTheme) => MaterialApp(
+      title: 'Flutter TV Shows',
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      initialRoute: loggedIn ? AppRoute.showList : AppRoute.login,
+      onGenerateRoute: (settings) => router.generateRoute(settings),
+      navigatorKey: navigatorKey,
+    ),
   );
 }
