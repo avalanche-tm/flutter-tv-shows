@@ -85,13 +85,13 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () {
-        final themeManager = AppTheme.of(context);
-        if (themeManager.name == AppThemes.green) {
-          AppTheme.of(context).setTheme(AppThemes.pink);
+        final themeManager = AppTheme.of<CustomTheme>(context);
+        if (themeManager.id == AppThemes.green) {
+          AppTheme.of(context).setTheme(AppThemes.pink, ThemeMode.dark);
           return;
         }
-        if (themeManager.name == AppThemes.pink) {
-          AppTheme.of(context).setTheme(AppThemes.green);
+        if (themeManager.id == AppThemes.pink) {
+          AppTheme.of(context).setTheme(AppThemes.green, ThemeMode.dark);
           return;
         }
       },

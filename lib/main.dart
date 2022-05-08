@@ -8,12 +8,14 @@ import 'package:loggy/loggy.dart';
 
 import 'app/app_config.dart';
 import 'app/app_theme/app_theme_pair.dart';
+import 'app/app_theme/app_theme_preferences.dart';
 import 'app/app_theme/app_theme_widget.dart';
 
 import 'app/theme.dart';
 import 'ui/auth/auth_provider.dart';
 import 'ui/providers/app_config_provider.dart';
 import 'ui/providers/navigator_provider.dart';
+import 'ui/providers/theme_preferences_provider.dart';
 import 'ui/routing/routes.dart';
 import 'ui/routing/router.dart' as router;
 
@@ -34,10 +36,12 @@ void main() {
     // initialize dependencies and provider container
     final appConfig = AppConfig.fromEnvironment();
     final navigatorKey = GlobalKey<NavigatorState>();
+    final themePreferences = await AppThemePreferences.fromPrefs();
     final container = ProviderContainer(
       overrides: [
         navigatorProvider.overrideWithValue(navigatorKey),
         appConfigProvider.overrideWithValue(appConfig),
+        themePreferencesProvider.overrideWithValue(themePreferences)
       ],
     );
     // initialize providers
@@ -62,20 +66,26 @@ void main() {
 @hcwidget
 Widget myApp(BuildContext context, WidgetRef ref, bool loggedIn) {
   final navigatorKey = ref.watch(navigatorProvider);
+  final themePreferences = ref.watch(themePreferencesProvider);
   FlutterNativeSplash.remove();
 
   return AppTheme<CustomTheme>(
+    // define themes in pairs and their id to switch between them
     themes: [
       AppThemePair(
         id: AppThemes.pink,
         light: PinkThemeLight(),
         dark: PinkThemeDark(),
       ),
-      AppThemePair(id: AppThemes.green, light: GreenThemeLight()),
+      AppThemePair(
+        id: AppThemes.green,
+        light: GreenThemeLight(),
+      ),
     ],
-    initialMode: ThemeMode.system,
-    builder: (lightTheme, darkTheme) => MaterialApp(
+    preferences: themePreferences,
+    builder: (lightTheme, darkTheme, mode) => MaterialApp(
       title: 'Flutter TV Shows',
+      themeMode: mode,
       theme: lightTheme,
       darkTheme: darkTheme,
       initialRoute: loggedIn ? AppRoute.showList : AppRoute.login,
