@@ -15,7 +15,7 @@ class AppThemes {
 /// class holding additional custom properties which
 /// ThemeData doesn't support
 abstract class CustomTheme {
-  Color get customColor;
+  // Color get customColor;
 }
 
 // shortcut to theme data and custom theme data

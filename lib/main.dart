@@ -12,12 +12,12 @@ import 'app/app_theme/app_theme_preferences.dart';
 import 'app/app_theme/app_theme_widget.dart';
 
 import 'app/theme.dart';
-import 'ui/auth/auth_provider.dart';
-import 'ui/providers/app_config_provider.dart';
-import 'ui/providers/navigator_provider.dart';
-import 'ui/providers/theme_preferences_provider.dart';
-import 'ui/routing/routes.dart';
-import 'ui/routing/router.dart' as router;
+import 'presentation/auth/auth_provider.dart';
+import 'presentation/providers/app_config_provider.dart';
+import 'presentation/providers/navigator_provider.dart';
+import 'presentation/providers/theme_preferences_provider.dart';
+import 'presentation/routing/routes.dart';
+import 'presentation/routing/router.dart' as router;
 
 part 'main.g.dart';
 

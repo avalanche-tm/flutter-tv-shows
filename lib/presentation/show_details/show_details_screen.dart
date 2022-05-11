@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../app/app_theme/app_theme_widget.dart';
 import '../../app/gen/assets.gen.dart';
-import '../../app/theme.dart';
 import '../../domain/shows/show_details.dart';
 import '../../domain/shows/show_episode.dart';
+import '../extensions/extensions.dart';
 import '../hooks/post_frame_call_hook.dart';
 import '../shows/show_details_state.dart';
 import '../shows/show_episodes_state.dart';
-import '../widgets/simple_snackbar.dart';
 import 'fading_gradient_effect.dart';
 import '../hooks/fade_in_animation_hook.dart';
 import '../shows/show_details_provider.dart';
@@ -29,18 +27,17 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
 
   ref.listen<ShowDetailsState>(showDetailsProvider, (previous, next) {
     next.whenOrNull(
-      error: (errorMsg, items) => _showSnackBarError(context, errorMsg),
+      error: (errorMsg, items) => context.showSnackBar(message: errorMsg),
     );
   });
 
   ref.listen<ShowEpisodesState>(showEpisodesProvider, (previous, next) {
     next.whenOrNull(
-      error: (errorMsg, items) => _showSnackBarError(context, errorMsg),
+      error: (errorMsg, items) => context.showSnackBar(message: errorMsg),
     );
   });
 
   return Scaffold(
-    backgroundColor: context.customTheme.customColor,
     body: SafeArea(
       top: false,
       child: NestedScrollView(
@@ -85,15 +82,17 @@ Widget showDetailsScreen(BuildContext context, WidgetRef ref, String showId) {
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () {
-        final themeManager = AppTheme.of<CustomTheme>(context);
-        if (themeManager.id == AppThemes.green) {
-          AppTheme.of(context).setTheme(AppThemes.pink, ThemeMode.dark);
-          return;
-        }
-        if (themeManager.id == AppThemes.pink) {
-          AppTheme.of(context).setTheme(AppThemes.green, ThemeMode.dark);
-          return;
-        }
+        // Theme switching demo code
+        //
+        // final themeManager = AppTheme.of<CustomTheme>(context);
+        // if (themeManager.id == AppThemes.green) {
+        //   AppTheme.of(context).setTheme(AppThemes.pink, ThemeMode.dark);
+        //   return;
+        // }
+        // if (themeManager.id == AppThemes.pink) {
+        //   AppTheme.of(context).setTheme(AppThemes.green, ThemeMode.dark);
+        //   return;
+        // }
       },
       child: const Icon(Icons.add),
     ),
@@ -263,10 +262,4 @@ Widget __episodeListItem(BuildContext context, ShowEpisode item) {
       ),
     ),
   );
-}
-
-void _showSnackBarError(BuildContext context, String errorMsg) {
-  final snackBar = simpleSnackBar(errorMsg);
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

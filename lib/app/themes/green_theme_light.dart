@@ -4,8 +4,8 @@ import '../app_theme/app_theme.dart';
 import '../theme.dart';
 
 class CustomGreenThemeLight extends CustomTheme {
-  @override
-  Color get customColor => Colors.green;
+  // @override
+  // Color get customColor => Colors.green;
 }
 
 class GreenThemeLight extends AppThemeData<CustomTheme> {

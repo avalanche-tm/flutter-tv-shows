@@ -140,8 +140,8 @@ final _floatingActionButtonTheme =
         );
 
 class CustomPinkThemeLight extends CustomTheme {
-  @override
-  Color get customColor => _pinkPrimary;
+  // @override
+  // Color get customColor => _pinkPrimary;
 }
 
 class PinkThemeLight extends AppThemeData<CustomTheme> {

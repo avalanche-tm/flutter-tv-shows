@@ -9,8 +9,8 @@ import '../../domain/validators/validators.dart';
 import '../action_emitter/action_listener_hook.dart';
 import '../auth/auth_provider.dart';
 import '../auth/auth_state.dart';
+import '../extensions/extensions.dart';
 import '../routing/routes.dart';
-import '../widgets/simple_snackbar.dart';
 
 part 'login_screen.g.dart';
 
@@ -27,7 +27,7 @@ Widget loginScreen(BuildContext context, WidgetRef ref) {
 
   ref.listen<AuthState>(authProvider, (previous, next) {
     next.whenOrNull(
-      error: (msg) => _showSnackBarError(context, msg),
+      error: (msg) => context.showSnackBar(message: msg),
     );
   });
 
@@ -207,9 +207,4 @@ void _handleActions(
       );
     }),
   );
-}
-
-void _showSnackBarError(BuildContext context, String errorMsg) {
-  final snackBar = simpleSnackBar(errorMsg);
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

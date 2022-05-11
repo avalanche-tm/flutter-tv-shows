@@ -7,12 +7,12 @@ import '../../app/gen/assets.gen.dart';
 import '../../domain/shows/show.dart';
 import '../action_emitter/action_listener_hook.dart';
 import '../auth/auth_provider.dart';
+import '../extensions/extensions.dart';
 import '../hooks/fade_in_animation_hook.dart';
 import '../hooks/post_frame_call_hook.dart';
 import '../routing/routes.dart';
 import '../shows/shows_provider.dart';
 import '../shows/shows_state.dart';
-import '../widgets/simple_snackbar.dart';
 
 part 'show_list_screen.g.dart';
 
@@ -25,7 +25,7 @@ Widget showListScreen(BuildContext context, WidgetRef ref) {
 
   ref.listen<ShowsState>(showsProvider, (previous, next) {
     next.whenOrNull(
-      error: (errorMsg, items) => _showSnackBarError(context, errorMsg),
+      error: (errorMsg, items) => context.showSnackBar(message: errorMsg),
     );
   });
 
@@ -157,9 +157,4 @@ void _handleActions(
       );
     }),
   );
-}
-
-void _showSnackBarError(BuildContext context, String errorMsg) {
-  final snackBar = simpleSnackBar(errorMsg);
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

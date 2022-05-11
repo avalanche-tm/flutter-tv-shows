@@ -15,9 +15,8 @@
 - splash screen generation with flutter_native_splash
 - secure storage with flutter_secure_storage
 - logging with loggy
-- custom theming
+- custom theming and theme switching
 
 ## What is not covered (yet):
 - internationalization
-- dynamic theme switching
 - testing

@@ -4,8 +4,8 @@ import '../app_theme/app_theme.dart';
 import '../theme.dart';
 
 class CustomPinkThemeDark extends CustomTheme {
-  @override
-  Color get customColor => Colors.black;
+  // @override
+  // Color get customColor => Colors.black;
 }
 
 class PinkThemeDark extends AppThemeData<CustomTheme> {
