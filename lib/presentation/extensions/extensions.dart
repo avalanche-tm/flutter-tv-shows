@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 extension ShowSnackBarExtension on BuildContext {
-  void showSnackBar({
-    required String message,
-  }) {
+  void showSnackBar({required String message}) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(
       content: SizedBox(
         height: 30,
@@ -13,9 +11,5 @@ extension ShowSnackBarExtension on BuildContext {
         ),
       ),
     ));
-  }
-
-  void showErrorSnackBar({required String message}) {
-    showSnackBar(message: message);
   }
 }
