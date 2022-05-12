@@ -5,7 +5,13 @@ extension ShowSnackBarExtension on BuildContext {
     required String message,
   }) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(
-      content: Text(message),
+      content: SizedBox(
+        height: 30,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(message),
+        ),
+      ),
     ));
   }
 
