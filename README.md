@@ -1,6 +1,6 @@
 # flutter_tv_shows
 
-## Demo project trying to demonstrate usage of the following:
+## Demo project demonstrating usage of the following:
 
 - state management with Riverpod
 - use of union classes and Freezed
@@ -16,6 +16,7 @@
 - secure storage with flutter_secure_storage
 - logging with loggy
 - custom theming and theme switching
+- app configuration using flutter_dotenv package
 
 ## What is not covered (yet):
 - internationalization

@@ -34,7 +34,7 @@ void main() {
       // for wasting their time and promise bug will be fixed asap :)
     };
     // initialize dependencies and provider container
-    final appConfig = AppConfig.fromEnvironment();
+    final appConfig = await AppConfig.fromDotEnv();
     final navigatorKey = GlobalKey<NavigatorState>();
     final themePreferences = await AppThemePreferences.fromPrefs();
     final container = ProviderContainer(

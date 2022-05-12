@@ -1,30 +1,38 @@
-import 'app_config.default.dart';
+import 'dart:io';
 
-/// 'app_config.local.dart' should be created for your development.
-/// You can also create additional configurations depending on
-/// your needs (remote, staging, etc.) but dont't forget to add
-/// them to a .gitignore
-/// Avoid storing sensitive information like API keys in your
-/// configuration files unless you plan to encrypt them with
-/// git-secret or similar tool
-///
-abstract class AppConfig {
-  const AppConfig();
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-  String get baseUrl;
-  String get apiUrl;
+class AppConfig {
+  final String baseUrl;
+  final String apiUrl;
 
-  /// Create instance of AppConfig depending on specified Environment
-  factory AppConfig.fromEnvironment() {
-    const env = String.fromEnvironment('ENV', defaultValue: 'unspecified');
-    if (env == 'local') {
-      // uncomment to activate local config
-      // return AppConfigLocal();
-      return AppConfigDefault();
-    } else if (env == 'default') {
-      return AppConfigDefault();
-    } else {
-      throw Exception('Environment not specified.');
-    }
+  AppConfig({
+    required this.baseUrl,
+    required this.apiUrl,
+  });
+
+  factory AppConfig._fromDotEnv() {
+    return AppConfig(
+      baseUrl: dotenv.env['BASE_URL'] ?? '',
+      apiUrl: dotenv.env['API_URL'] ?? '',
+    );
+  }
+
+  /// If --dart-define ENV variable is not found, '.env' file
+  /// gets read, otherwise '.env' is merged with the value
+  /// from ENV. For example if --dart-define ENV=production,
+  /// '.env.production' gets read.
+  static Future<AppConfig> fromDotEnv() async {
+    const env = bool.hasEnvironment('ENV') //
+        ? String.fromEnvironment('ENV')
+        : null;
+
+    const envFileName = env != null ? '.env.$env' : '.env';
+
+    await dotenv.load(
+      fileName: 'lib/app/env/$envFileName',
+      mergeWith: Platform.environment,
+    );
+    return AppConfig._fromDotEnv();
   }
 }

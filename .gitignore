@@ -1,9 +1,3 @@
-# AppConfig files
-app_config.local.dart
-app_config.remote.dart
-app_config.staging.dart
-app_config.production.dart
-
 # Miscellaneous
 *.class
 *.log
@@ -15,6 +9,8 @@ app_config.production.dart
 .history
 .svn/
 .fvm/flutter_sdk
+launch.json
+# *.env* should be ignored in real world scenario
 
 # IntelliJ related
 *.iml
